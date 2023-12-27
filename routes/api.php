@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Route::post('/subpages/{slug}/posts/{postSlug}/comments', [CommentController::class, 'store'])
+    //->name('comments.store');
+
+//Route::post('/comments/{comment}/toggle-like', 'CommentController@toggleLike')->name('comments.toggleLike');
+

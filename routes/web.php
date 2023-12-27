@@ -7,7 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SubpageController;
 use App\Http\Controllers\SubscriptionController;
-
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +22,7 @@ use App\Http\Controllers\SubscriptionController;
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
 
 
+
 // Middleware for all the routes
 Route::middleware(['auth'])->group(function () {
     // Subpage Routes
@@ -56,7 +58,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subpages/{slug}', [SubpageController::class, 'showSubpage'])->name('subpages.showSubpage'); // show a specific subpage with slug - working
     Route::post('/subpages', [SubpageController::class, 'store'])->name('subpages.store'); // create and store a subpage from the create form - working
     Route::delete('/subpages/{slug}/subpageDelete', [SubpageController::class, 'destroy'])->name('subpages.delete'); // show a specific subpage with slug - working
-
 
     // Subscription Routes
     Route::post('/subpages/{slug}/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe'); // subscribe to a page
@@ -78,16 +79,27 @@ Route::middleware(['auth'])->group(function () {
 
     // Toggle like for a comment
     Route::post('/{comment}/toggleLike', [CommentController::class, 'toggleLike'])->name('comments.like.toggle'); // toggle like for a comment - working
+    Route::post('/comments/{comment}/toggle-like', 'CommentController@toggleLike')->name('comments.toggleLike');
 
     // Delete comment
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::get('/', [CommentController::class, 'index'])->name('home');
+
+    Route::post('/comments/{comment}/toggle-like', 'CommentController@toggleLike')->name('comments.toggleLike');
+     // Nested Post Routes for a subpage (using slug)
+    Route::post('/subpages/{slug}/post', [PostController::class, 'store'])->name('subpages.posts.store'); // create and store a new post inside subpage with unique slug within the subpage - working
+
+     // Toggle like for a post
+    Route::post('/subpage/{slug}/post/{postSlug}/toggle-like', [PostController::class, 'toggleLike'])->name('posts.like.toggle');  // toggle like for a post - working
+ 
+     // Delete a post
+    Route::delete('/subpages/{slug}/postDelete/{postSlug}', [PostController::class, 'destroy'])->name('subpages.posts.destroy'); // delete a post - working
+     
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+
+    Route::post('/posts/{slug}/store', [PostController::class, 'store'])->name('posts.store');
 
 
 });
-
-
-
-
-
 
 require __DIR__.'/auth.php';
