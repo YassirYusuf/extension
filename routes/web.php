@@ -76,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Store a comment
     Route::post('/subpage/{slug}/post/{postSlug}/comment', [CommentController::class, 'store'])->name('posts.comments.store'); // comment a post - working
+ 
 
     // Toggle like for a comment
     Route::post('/{comment}/toggleLike', [CommentController::class, 'toggleLike'])->name('comments.like.toggle'); // toggle like for a comment - working
@@ -98,6 +99,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 
     Route::post('/posts/{slug}/store', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/subpages/{subpage}/posts/create', [PostController::class, 'create'])->name('posts.create');
 
 
 });

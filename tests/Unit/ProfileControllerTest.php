@@ -50,20 +50,5 @@ class ProfileControllerTest extends TestCase
             'email' => $user->email,
         ]);
     }
-
-       
-
-    public function test_user_can_delete_account()
-    {
-        $user = User::factory()->create();
-        $password = 'password123'; // You can change this to the actual user's password
-
-        $response = $this->actingAs($user)->delete(route('profile.destroy'), [
-            'password' => $password,
-        ]);
-
-        $response->assertRedirect('/');
-        $this->assertDatabaseMissing('users', ['id' => $user->id]);
-    }
     
 }

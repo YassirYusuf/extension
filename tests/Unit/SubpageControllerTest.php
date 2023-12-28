@@ -15,17 +15,22 @@ class SubpageControllerTest extends TestCase
      */
     public function test_show_subpage(): void
     {
-        $subpage = Subpage::factory()->create(); // Create a single subpage for testing
-    
-        $response = $this->get(route('subpages.showSubpage', ['slug' => $subpage->slug]));
-    
-        $response->assertStatus(200);
-        $response->assertViewIs('subpages.show');
-        $response->assertViewHas('subpage', $subpage);
+    $user = User::factory()->create();
+    $this->actingAs($user); // Authenticate the user
+
+    $subpage = Subpage::factory()->create();
+    $response = $this->get(route('subpages.showSubpage', ['slug' => $subpage->slug]));
+
+    $response->assertStatus(200);
+    $response->assertViewIs('subpages.show');
+    $response->assertViewHas('subpage', $subpage);
     }
 
     public function test_show_all_subpages()
     {
+        $user = User::factory()->create(); // Create a user
+        $this->actingAs($user); // Authenticate the user
+    
         $subpages = Subpage::factory()->count(5)->create();
         $response = $this->get(route('subpages.showAll'));
         $response->assertStatus(200);

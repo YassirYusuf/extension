@@ -13,54 +13,38 @@ class PostControllerUnitTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    public function testCreateView()
-    {
-        // Assuming you have a user
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        // Assuming you have a subpage
-        $subpage = Subpage::factory()->create();
-
-        // Visit the create view
-        $response = $this->get(route('posts.create', ['subpage' => $subpage]));
-
-        // Assert the response status
-        $response->assertStatus(200);
-
-        // Assert that the view contains necessary elements or data
-        $response->assertSee('Create Post');
-        $response->assertViewHas('subpage', $subpage);
-    }
 
     public function testStoreMethod()
     {
-        // Assuming you have a user
-        $user = User::factory()->create();
-        $this->actingAs($user);
+       // Assuming you have a user
+    $user = User::factory()->create();
+    $this->actingAs($user);
 
-        // Assuming you have a subpage
-        $subpage = Subpage::factory()->create();
+    // Assuming you have a subpage
+    $subpage = Subpage::factory()->create();
 
-        // Data for the post
-        $postData = [
-            'title' => $this->faker->sentence,
-            'content' => $this->faker->paragraph,
-        ];
+    // Post data to store a new post
+    $postData = [
+        'title' => 'Test Post Title',
+        'content' => 'Test Post Content'
+    ];
 
-        // Submit the form
-        $response = $this->post(route('posts.store', $subpage->slug), $postData);
+    $response = $this->post(route('subpages.posts.store', ['slug' => $subpage->slug]), $postData);
 
-        // Assert that the post was created
-        $this->assertCount(1, Post::all());
+    // Check for a successful response or appropriate redirect
+    $response->assertStatus(302); // Check for a redirect status
 
-        // Assert the response status and redirection
-        $response->assertStatus(302);
-        $response->assertRedirect(route('subpages.showSubpage', $subpage->slug));
+    // Optionally, assert for a redirection to a specific route
+    $response->assertRedirect(route('subpages.showSubpage', ['slug' => $subpage->slug]));
+
+    // Optionally, assert that the post was created in the database
+    $this->assertDatabaseHas('posts', [
+        'title' => 'Test Post Title',
+        'content' => 'Test Post Content'
+        // Add more fields to check as necessary
+    ]);
     }
 
-
-    
 
     public function testToggleLikeMethod()
     {

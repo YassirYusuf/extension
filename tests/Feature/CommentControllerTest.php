@@ -27,7 +27,7 @@ class CommentControllerTest extends TestCase
 
         // Mock a request with the required data
         $content = $this->faker->sentence;
-        $response = $this->actingAs($user)->post(route('comments.store', [$subpage->slug, $post->slug]), [
+        $response = $this->actingAs($user)->post(route('posts.comments.store', [$subpage->slug, $post->slug]), [
             'content' => $content,
         ]);
 

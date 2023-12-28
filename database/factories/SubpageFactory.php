@@ -13,7 +13,7 @@ class SubpageFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->sentence(1),,
+            'name' => $this->faker->unique()->sentence(1),
             'description' => $this->faker->paragraph,
             'owner_id' => User::factory()->create()->id,
             'slug' => $this->faker->unique()->slug,

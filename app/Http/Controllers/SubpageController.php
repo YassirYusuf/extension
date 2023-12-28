@@ -21,11 +21,7 @@ class SubpageController extends Controller
     }
 
     // Method to show all subpages
-    public function showAll()
-    {
-        $subpages = Subpage::all();
-        return view('subpages.subpages', compact('subpages'));
-    }
+   
 
     // Method to handle the search
     public function search(Request $request)
